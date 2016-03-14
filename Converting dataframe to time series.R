@@ -42,9 +42,32 @@ Table = data.frame(
   Base_Level_Plot  = character(0),
   stringsAsFactors = FALSE)
 
-Plot = as.logical(readline(prompt = "You would like to plot the graphs?   (Please answer T / F) \n"))
+Clear_table     <- as.logical(readline(prompt = "You would like to clear the table of data?   (Please answer T / F) \n"))
+if (Clear_table == T){rm(Table)}
+
+Plot           <- as.logical(readline(prompt = "You would like to plot the graphs?   (Please answer T / F) \n"))
+if (Plot == T) {Plot_Key  <- readline(prompt = "What would you like to call this session?   (e.g. todays date) \n")}
+
+# Run Script -----------------------------------------------------------------------
+
+save("Run_Script",file="Run_Script.Rdata")
+load(file="Run_Script")
+
+Run_Script()  # <---- This will run the code and calculate data.
+View (Table)   # <---- This wil display data.
+
+
+
+
+
+
+
 
 # Function -------------------------------------------------------------------------
+# If you want to change the function then alter it and resave the function to the workspace. There is a line to save the function to disk above.
+
+Run_Script  <- function (){
+  
 for (x in 1:length(Whole_Dataset)){
 
 Gauge_Name <- Gauge_Names[[x]]
@@ -75,18 +98,20 @@ if (length(Missing_data)>0){
 SAMPLE_ts = xts(SAMPLE$Value,SAMPLE$ObsDate) # converts dataframe to timeseries
 
 # Plots the time series:
+pdf(file=file.path("Plots/",paste(Plot_Key, " - ", Gauge_Name, ".pdf", sep = "")), title= paste("Gauge ", Gauge_Name, sep = "")) 
 if (Plot == T){
-  xlabel = paste(substr(start(SAMPLE_ts),1,10)," to ", substr(end(SAMPLE_ts),1,10), sep = "")
-  mlabel = paste("River Level \n (up to 15 minute resolution) \n Gauge number: ", Gauge_Name)
-  plot(SAMPLE_ts, main = mlabel, xlab = xlabel, ylab = "River Level (meters)")
+  layout(matrix(c(1,2,3), nrow = 3) )# This sets the number of rows per plot, cnange if you change the number of plots
+  xlabel = paste(substr(start(SAMPLE_ts),1,10),"   to   ", substr(end(SAMPLE_ts),1,10), " -   15 Minute Resolution", sep = "")
+  mlabel = paste("Gauge number: ", Gauge_Name)
+  plot(SAMPLE_ts, main = mlabel, xlab = xlabel, ylab = "River Level (m)")
 }
 
 # Converts and plots hourly data to daily data:
 SAMPLE_ts_daily = apply.daily(SAMPLE_ts,mean)
 if (Plot == T){
-  xlabel_daily = paste(start(SAMPLE_ts_daily), end(SAMPLE_ts_daily), sep = "  to ")
-  mlabel_daily = paste("Daily River Level \n Gauge number: ", Gauge_Name)
-  plot(SAMPLE_ts_daily, main = mlabel_daily, xlab = xlabel_daily, ylab = "River Level (meters)")
+  xlabel_daily = paste(start(SAMPLE_ts_daily), "   to   ", end(SAMPLE_ts_daily), " -   Daily Resolution", sep = " ")
+  #mlabel_daily = paste("Daily River Level \n Gauge number: ", Gauge_Name)
+  plot(SAMPLE_ts_daily, main = (NULL), xlab = xlabel_daily, ylab = "River Level (m)")
 }
 
 # Calculate Base Level -------------------------------------------------------------------------
@@ -116,7 +141,7 @@ if (Plot == T){
      #ylab  = "River Level (meters)")
   assign(paste("BL", Gauge_Name, sep = "_"), value=recordPlot())
 }
-
+dev.off()
 # Calculate Base Level Index -------------------------------------------------------------------------
 BLI = BFI(SAMPLE_daily_lfobj, year= "any", breakdays = NULL, yearly = F)
 BLI = round(BLI, digits=4)
@@ -137,8 +162,7 @@ Entry    <- data.frame(
 
 Table = rbind (Table, Entry)
 }
-
-View(Table)
+}
 
 # EXTRA: ----------------------------------------------------------------------------------------------
 # baseflow(SAMPLE_daily_lfobj, tp.factor = 0.9, block.len = 5)
