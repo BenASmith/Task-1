@@ -20,6 +20,8 @@
 
 # Issues with this script - Base Level plots can't be customised and it may be worth checking out different methods of estimating base flow as it can depend on things like rock type. 
 
+
+
 # Setup and Preamble ---------------------------------------------------------------
 library(xts)
 library(lfstat)
@@ -40,36 +42,13 @@ Table = data.frame(
   Base_Level_Plot  = character(0),
   stringsAsFactors = FALSE) # You may wish to reassign this blank table if doing multiple runs to save accumulating repeated data.
 
-# Run Script -----------------------------------------------------------------------
-# Run these lines individually:
-load(file="Run_Script.Rdata")
-
-Plot           <- as.logical(readline(prompt = "You would like to plot the graphs?   (Please answer T / F) \n"))
-
-if (Plot == T) {Plot_Key  <- readline(prompt = "What would you like to call this session?   (e.g. Gauge/ Run x) \n")
+Plot  <- as.logical(readline(prompt = "You would like to plot the graphs?  \n (Please answer T / F) \n"))
+  if (Plot == T) {Plot_Key  <- readline(prompt = "What would you like to call this session?  \n (e.g. Gauge/ Run x) \n")
 }   else{Plot_Key <- as.character(format(Sys.Date(), format="%d.%m.%y"))}
-
-# Run these lines together:
-start.time <- Sys.time()
-Run_Script()  # <---- This will run the code and calculate data.
-end.time <- Sys.time()
-time.taken <- end.time - start.time
-time.taken
-
-View (Table)   # <---- This wil display data.
-
-
-
-
-
-
 
 
 
 # Function -------------------------------------------------------------------------
-# If you want to change the function then alter it and resave the function to the workspace. There is a line to save the function to disk above.
-
-Run_Script  <- function (){
 for (x in 1:length(Whole_Dataset)){
 
 Gauge_Name <- Gauge_Names[[x]]
@@ -165,29 +144,10 @@ Entry    <- data.frame(
 
 Table = rbind (Table, Entry)
 }
-return(Table)
-}
-
-save("Run_Script",file="Run_Script.Rdata")
 
 # EXTRA: ----------------------------------------------------------------------------------------------
-# If you wish to 
+# If you wish to save the table:
+write.csv(Table, file=(paste(Plot_Key, " - Data.csv", sep = "")), row.names =F)
+# To load this data:
+Gauge_Data = read.csv("filename", header=TRUE)
 
-
-#baseflow(SAMPLE_daily_lfobj, tp.factor = 0.9, block.len = 5)
-# hydrograph(SAMPLE_daily_lfobj, startdate = NULL, enddate = NULL, amin = FALSE)
-# rfa(SAMPLE_daily_lfobj, n = 7, event = 100, dist = c("wei","gev","ln3","gum","pe3"))
-
-
-# load("tbl_River1.RData")
-# load("tbl_River2.RData")
-# load("tbl_River3.RData")
-# River_List = list(tbl_River1[,c(1,2)],tbl_River2[,c(1,2)],tbl_River3[,c(1,2)]) 
-
-# lapply (Whole_Dataset, function(x) range(x$QualityCode)) determine range of quality codes
-
-# NA_continuous <- na.contiguous(object=SAMPLE_ts_daily) # find the longest stretch of consecutive of NA's
-# length(NA_continuous); str(NA_continuous)
-
-# install.packages("zoo", "xts","lfstat")
-# library(zoo) # need to have this on the start of the script. Before  this you need to install it on the computer
