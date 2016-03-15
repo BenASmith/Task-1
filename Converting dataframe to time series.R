@@ -20,13 +20,11 @@
 
 # Issues with this script - Base Level plots can't be customised and it may be worth checking out different methods of estimating base flow as it can depend on things like rock type. 
 
-# Setup -------------------------------------------------------------------------
+# Setup and Preamble ---------------------------------------------------------------
 library(xts)
 library(lfstat)
 setwd(dir="H:/PhD Documents/Task 1/Test Documents") 
 load("TEST_River_Level_Data.RData")
-
-# Preamble -------------------------------------------------------------------------
 
 Whole_Dataset  <- setNames(lapply(ls(pattern="tbl"), function(x) get(x)), ls(pattern="tbl"))
 Gauge_Names    <- ls(Whole_Dataset)
@@ -40,21 +38,26 @@ Table = data.frame(
   Removed_Errors   = numeric(0),
   Base_Level_Index = numeric(0),
   Base_Level_Plot  = character(0),
-  stringsAsFactors = FALSE)
-
-Clear_table     <- as.logical(readline(prompt = "You would like to clear the table of data?   (Please answer T / F) \n"))
-if (Clear_table == T){rm(Table)}
-
-Plot           <- as.logical(readline(prompt = "You would like to plot the graphs?   (Please answer T / F) \n"))
-if (Plot == T) {Plot_Key  <- readline(prompt = "What would you like to call this session?   (e.g. todays date) \n")}
+  stringsAsFactors = FALSE) # You may wish to reassign this blank table if doing multiple runs to save accumulating repeated data.
 
 # Run Script -----------------------------------------------------------------------
+# Run these lines individually:
+load(file="Run_Script.Rdata")
 
-save("Run_Script",file="Run_Script.Rdata")
-load(file="Run_Script")
+Plot           <- as.logical(readline(prompt = "You would like to plot the graphs?   (Please answer T / F) \n"))
 
+if (Plot == T) {Plot_Key  <- readline(prompt = "What would you like to call this session?   (e.g. Gauge/ Run x) \n")
+}   else{Plot_Key <- as.character(format(Sys.Date(), format="%d.%m.%y"))}
+
+# Run these lines together:
+start.time <- Sys.time()
 Run_Script()  # <---- This will run the code and calculate data.
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+time.taken
+
 View (Table)   # <---- This wil display data.
+
 
 
 
@@ -67,11 +70,10 @@ View (Table)   # <---- This wil display data.
 # If you want to change the function then alter it and resave the function to the workspace. There is a line to save the function to disk above.
 
 Run_Script  <- function (){
-  
 for (x in 1:length(Whole_Dataset)){
 
 Gauge_Name <- Gauge_Names[[x]]
-SAMPLE=Whole_Dataset[[x]]
+SAMPLE     <- Whole_Dataset[[x]]
 
 # Change date format:
 SAMPLE$ObsDate <- strptime(SAMPLE$ObsDate,"%Y-%m-%d %H:%M:%S")
@@ -98,8 +100,8 @@ if (length(Missing_data)>0){
 SAMPLE_ts = xts(SAMPLE$Value,SAMPLE$ObsDate) # converts dataframe to timeseries
 
 # Plots the time series:
-pdf(file=file.path("Plots/",paste(Plot_Key, " - ", Gauge_Name, ".pdf", sep = "")), title= paste("Gauge ", Gauge_Name, sep = "")) 
 if (Plot == T){
+  pdf(file=file.path("Plots/",paste(Plot_Key, " - ", Gauge_Name, ".pdf", sep = "")), title= paste("Gauge ", Gauge_Name, sep = "")) 
   layout(matrix(c(1,2,3), nrow = 3) )# This sets the number of rows per plot, cnange if you change the number of plots
   xlabel = paste(substr(start(SAMPLE_ts),1,10),"   to   ", substr(end(SAMPLE_ts),1,10), " -   15 Minute Resolution", sep = "")
   mlabel = paste("Gauge number: ", Gauge_Name)
@@ -140,8 +142,9 @@ if (Plot == T){
      #xlab  = paste(start(SAMPLE_ts_daily), end(SAMPLE_ts_daily))
      #ylab  = "River Level (meters)")
   assign(paste("BL", Gauge_Name, sep = "_"), value=recordPlot())
-}
 dev.off()
+}
+
 # Calculate Base Level Index -------------------------------------------------------------------------
 BLI = BFI(SAMPLE_daily_lfobj, year= "any", breakdays = NULL, yearly = F)
 BLI = round(BLI, digits=4)
@@ -162,10 +165,16 @@ Entry    <- data.frame(
 
 Table = rbind (Table, Entry)
 }
+return(Table)
 }
 
+save("Run_Script",file="Run_Script.Rdata")
+
 # EXTRA: ----------------------------------------------------------------------------------------------
-# baseflow(SAMPLE_daily_lfobj, tp.factor = 0.9, block.len = 5)
+# If you wish to 
+
+
+#baseflow(SAMPLE_daily_lfobj, tp.factor = 0.9, block.len = 5)
 # hydrograph(SAMPLE_daily_lfobj, startdate = NULL, enddate = NULL, amin = FALSE)
 # rfa(SAMPLE_daily_lfobj, n = 7, event = 100, dist = c("wei","gev","ln3","gum","pe3"))
 
