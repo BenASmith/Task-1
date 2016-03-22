@@ -1,0 +1,268 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[DIV=calc, paper=a4, fontsize=11pt, twocolumn]{scrartcl}	 % A4 paper and 11pt font size
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage[protrusion=true,expansion=true]{microtype} % Better typography
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage[svgnames]{xcolor} % Enabling colors by their 'svgnames'
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{fix-cm}	 % Custom font sizes - used for the initial letter in the document
+
+\usepackage{sectsty} % Enables custom section titles
+\allsectionsfont{\usefont{OT1}{phv}{b}{n}} % Change the font of all section commands
+
+\usepackage{fancyhdr} % Needed to define custom headers/footers
+\pagestyle{fancy} % Enables the custom headers/footers
+\usepackage{lastpage} % Used to determine the number of pages in the document (for "Page X of Total")
+
+% Headers - all currently empty
+\lhead{}
+\chead{}
+\rhead{}
+
+% Footers
+\lfoot{}
+\cfoot{}
+\rfoot{\footnotesize Page \thepage\ of \pageref{LastPage}} % "Page 1 of 2"
+
+\renewcommand{\headrulewidth}{0.0pt} % No header rule
+\renewcommand{\footrulewidth}{0.4pt} % Thin footer rule
+
+\usepackage{lettrine} % Package to accentuate the first letter of the text
+\newcommand{\initial}[1]{ % Defines the command and style for the first letter
+\lettrine[lines=3,lhang=0.3,nindent=0em]{
+\color{DarkGoldenrod}
+{\textsf{#1}}}{}}
+
+% Packages added my Ben
+\usepackage[round]{natbib}
+\usepackage[pdfpagemode={UseOutlines},bookmarks=true,bookmarksopen=true, bookmarksopenlevel=0,bookmarksnumbered=true,hypertexnames=false,
+colorlinks,linkcolor={blue},citecolor={blue},urlcolor={red},
+pdfstartview={FitV},unicode,breaklinks=true]{hyperref}
+%\usepackage{hyperref}
+\hypersetup{urlcolor=blue, colorlinks=true}
+% \usepackage{adjustbox} % Not used, tabularx did the job of fixing column widths
+\usepackage{tabularx}
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\usepackage{titling} % Allows custom title configuration
+
+\newcommand{\HorRule}{\color{DarkGoldenrod} \rule{\linewidth}{1pt}} % Defines the gold horizontal rule around the title
+
+\pretitle{\vspace{-30pt} \begin{flushleft} \HorRule \fontsize{50}{50} \usefont{OT1}{phv}{b}{n} \color{DarkRed} \selectfont} % Horizontal rule before the title
+
+\title{A National Survey of Groundwater Influence} % Your article title
+
+\posttitle{\par\end{flushleft}\vskip 0.5em} % Whitespace under the title
+
+\preauthor{\begin{flushleft}\large \lineskip 0.5em \usefont{OT1}{phv}{b}{sl} \color{DarkRed}} % Author font configuration
+
+\author{Ben Smith, } % Your name
+
+\postauthor{\footnotesize \usefont{OT1}{phv}{m}{sl} \color{Black} % Configuration for the institution name
+PhD Student at the University of Newcastle -  \today{} %Your institution
+
+\par\end{flushleft}\HorRule} % Horizontal rule after the title
+
+\date{} % Add a date here if you would like one to appear underneath the title block
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title
+
+\thispagestyle{fancy} % Enabling the custom headers/footers for the first page 
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+
+% The first character should be within \initial{}
+\initial{T}\textbf{here is a lack of research in the field of groundwater flooding its despite it's significant influence on the extent of fluvial and pluvial floods. My PhD will address this by using a coupled groundwater-surface water model to investigate flooding from multiple sources. The initial step in this process is to determine which catchments across the UK are likely to be subject to multisourced influences. This shall be investigated using national river level data, the rational and methodology for which is defined herein.}
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE CONTENTS
+%----------------------------------------------------------------------------------------
+
+\section*{Section 1 - Rational}
+Groundwater flooding occurs when water rises to above ground level from subsurface \citep{Naughton2015}, this is most likely to occur when high antecedent groundwater conditions are paired with increased rainfall \citep{Macdonald2008}. Predominately situated over chalk catchments, it is estimated that 122,000 - 290,000 properties in the UK are at risk of groundwater flooding \citep{McKenzie2015}. Furthermore, antecedent conditions, such as high groundwater levels, can compound the risk of flooding from other sources \citep{An2014} and so it should come as no surprise that a further 980,000 properties are at risk of flooding from multiple sources \citep{McKenzie2015}. As such it is appropriate to further develop current methods of establishing the risk posed by multisource flooding in the UK. This is the topic of my PhD, to investigate flooding from multiple sources through the use of a coupled groundwater-surface water model.
+
+In the quest to role out multisource flooding around the UK, it is first appropriate to conduct preliminary research into which catchments are likely to be at risk of such events. As such, this task seeks the identify the following research question:
+\begin{center}
+	\textit{'In which areas of the UK, and under what conditions, is a multisourced assessment of flood risk necessary or appropriate.'}
+\end{center}
+The benefits of answering this are twofold - to (hopefully) justify the development of such a model whist indicating those areas that are likely to benefit from multisourced models, thus aiding their design and implementation. This document seeks to provided and overview of research already being conducted in this field along with the methodology intended for  addressing this question.
+
+%\begin{enumerate}
+%	\item Base level indexes (BLIs) will be calculated for each of the gauging stations. This will indicate the of groundwater in each river.
+%	\item The frequencies of river level change will be investigated through wavelet analysis. This will indicate whether, following a rainfall event, the river is subject to rapid surface runoff responses or slower groundwater sourced responses or a combination of both. 
+%\end{enumerate}
+%Both of these investigations will be spatially visualised on maps to show the locations of groundwater sourced, surface water sourced and multisourced river sections. Alongside this quantitative approach, a scan of the literature will be conducted to create a catalogue of multisourced flooding eventsCoupled with this with be a 
+
+\section*{Section 2 - Current knowledge}
+
+
+\section*{Section 3 - Methodology}
+[Make sure that you state the reason that you are conducting each analysis and how that ties back to research questions.]\\
+
+	\subsection*{Raw Data}
+[Talk about what the data is, the work that has been done on it, the issues with it and what you will do to it. What programs you will use etc. Are there programs that will let you infil the errors?]\\
+
+The primary method of assessment in this task will use a national river level (or stage) dataset. This is composed of recordings from approximately 2500 gauging stations situated across England, Wales and Scotland. England and Wales hold the vast majority of the stations, with relatively few, poorly distributed gauges in Scotland. This data was held in the Environment Agency's WISKI hydrometric archive until recently when it was compiled and quality controlled by the JBA Trust. This was conducted as part of the SINATRA Project (\url{http://www.met.reading.ac.uk/flooding/}) in an investigation into instances where river levels have risen rapidly. Many of the gauging station records are of high resolution with recordings every 15 minutes however there are instances where this is not the case or where there are gaps in the record - these can range in length from a single recording to many years of data. Furthermore, these recordings may not have originated from exact 15 minute intervals but have been rounded to the nearest appropriate interval.
+
+Data was quality controlled to some degree during compilation by JBA, however as this was a mostly automated process it is not perfect and there are still missing dates and errant river levels. These errors may be down to imperfect transfers of data between systems or perhaps when original recordings were not taken due to steady river level. In some instances, where only a few data points were missing, river levels have been interpolated - it is not clear where these points are. Care will be taken during the analysis conducted during this study to identify and deal with such occurrences.
+
+Any data that does not have an associated date will be removed. A simple check will be conducted to identify periods over which river level experiences an significant and immediate or a change that is beyond the plausible scale (e.g. a level rise of 10's of meters). These instances will be inspected on a case by case basis and levels corrected where possible. Where this is not possible, data will be removed (replaced with NA values). Time series that do not have a sufficient duration shall not be used in this investigation - 'a sufficient duration refers to xxx. This will depend of the resolution under investigation. For example, in the base level analysis, as long as at least one subdaily level has been recorded that day will be used in the calculations regardless of the number of missing subdaily values. *** You may want to review this later ***.
+
+	\subsection*{Base Level Index (BLI)}
+[Give a basic introduction to BFI, what you are going to use/do and what you will be able to see from your results. Also mention how you will present them.]\\
+
+Base flow reduction is a technique that has been carried out on river flow hydrographs for many years. This is the process of splitting the flow into fast flow and slow flow (or base flow) components. The fast flow component is thought to represent water from surface runoff that enters the stream system soon after is is precipitated. The slow component is thought to be derived from stored sources and should refer to a relatively consistent water level within the river that is relatively independent of local rainfall. By taking the low (or base) flow as a ratio of the total stream flow, the base 'base flow index' is calculated \citep{Gustard1992}. The base flow index (BFI) can therefore be used to estimate the volume of water that has been derived from stored sources - the majority of which comes from groundwater \citep{Li2013}. \citet{Nejadhashemi2009} stated that over 40 methods exist, with more developed since, to calculate the BFI and that these can be split into six categories:
+
+\begin{table*}
+\caption{Methods for Calculating BFI}
+\centering
+%\begin{adjustbox}{width=1\textwidth}
+\begin{tabularx}{\linewidth}{ l X X X c c}
+%	\begin{tabular*}{\textwidth}{ l c c c c c}
+		\toprule
+		%\multicolumn{3}{c c}{Name} \\
+		%\cmidrule(r){1-2}
+		Method Type & Notes & Pros & Cons & Plausible & References\\
+		\midrule
+		Early graphical methods & Subjective &x & x&x  &\\
+		Empirical methods &x  &x & x&x &\\
+		Automated methods (RDFs) & These apply signal processing techniques to remove the high frequency changes in flow, leaving the low frequency base flow & Commonly used, simple and efficient. Only require a stream hydrograph and limited user defined parameters for computation. & Do not take into account physical processes. The applicability of the user defined parameters depends on which catchment it is applied to. & Yes & \citet{Li2013} \\
+		Analytical hydrographs & x &x &x &x & \\
+		Three component methods &x  &x & x&x & \\
+		Geochemical methods & x & Deemed to be accurate & Data is not available of practically obtainable & No & \\
+	\bottomrule
+\end{tabularx}
+%\end{adjustbox}
+\end{table*}
+
+
+I think that this space needs crap in it for latex to work
+
+\begin{itemize}
+	\item Early graphical methods
+	\item Empirical methods
+	\item Automated methods
+	\item Analytical hydrographs
+	\item Three component methods
+	\item Geochemical methods
+\end{itemize}
+
+Graphical techniques were the first ones to be used however these were found to be rather subjective and so, since the 1980's, increasingly complex methods have been developed \citet{Li2013}. Although it is difficult to assess the accuracy of the different methods \citep{Li2013}, \citet{Nejadhashemi2009} selected 5 methods, according to citation count and the availability of the required data,  and tested them against recorded base flows from a small catchment in the USA. Automated methods, specifically recursive digital filters (RDAs), are the most used due to their simplicity and efficiency \citet{Li2013} and Nejadhashemi et al. found that an automated method proposed by \citet{Boughton1988} had the closest correlation to the observed base flow data. One of the limitations with this method however is that it requires the choosing of a single point that is deemed to be the end of surface runoff. Furthermore, this method was found to be sensitive to physiological characteristics as well as hydrological conditions. These issues could be very problematic when conducting this automated study due to the potentially time intensive selecting of points and the reliance on accurate, time intensive estimations of the catchment parameters. Whilst other methods investigated held some degree of accuracy, it was found that a simple smoothing relationship was the least effective. **I think that this may be what LFstat uses**.
+
+As the data used here is river level (rather than flow) from herein this process will simply be applied to level as it would flow. The processes by which base flow index are calculated are transferable between flow and level. As no other literature could be found that uses this separation method on river level, this is taken to be the first time such an assessment has been conducted, at least on such a large scale. What follows is a more detailed explanation of some of the methods that can be used to calculate the base flow index, or in this instance the base \textit{level} index.
+
+Base flow separation has been in place for several decades **reference**, however has developed in complexity and computational requirements over the years \citep{Stadnyk2015}. Several methods exist for calculating the BFI of a section of river, each requires a time series of the recorded flow, and many some additional catchment parameters. These methods have been split into a number of categories: 
+
+
+	\subsection*{Wavelet Analysis}
+Wavelet analysis tests which frequencies are present in the data. In other words, whether the river level has any regularity to it and, if so how long and how prevalent this is. An example of such a frequency or regularity is evident in many of the time series on a yearly scale  where each year river levels increase over the winter months.
+
+It is presumed that variations in river level that are due to groundwater influences will occur over a number of days where as those that are a Direct result of runoff may only take a umber of hours to pass into the river system and flow past te gauge. This frequency analysis should therefore expose those rivers that have a strong groundwater or base level components.
+
+	\subsection*{A Flood Catalogue}
+	\subsection*{Hydrograph Inspection}
+	\subsection*{Hypothesis Testing}
+		\begin{itemize}
+			\item The degree to which groundwater influences a catchment correlates with the catchment's underlying geology.
+			\item The BLI calculated in this study will mirror the BFI calculated my the NRFA.
+			\item Base Level Index will increase with distance from source.
+			\item Examples of multisourced flooding will occur in areas that sit halfway along the spectrum of catchments influenced by the end-members of groundwater and surface water.
+			\item The south of England is the area most at risk from multisource flooding.
+			\item It is possible to establish the dominant time scales associated with flooding from different sources using wavelet analysis and hydrograph inspection.
+			\item Results will correlate with other groundwater flood maps such as those produced by the Environment Agency, the British Geological Survey, JBA and ESI.
+		\end{itemize}
+
+\section*{Section 4 - Initial Trials}
+Prior to this task, the river levels recorded at 13 gauging stations spread across the UK were looked at. These gauges were chosen so as to sample a range of catchment characteristics and were intended to capture rivers ranging from heavily dominated by groundwater to those dominated my surface water and those under the influence of both. in selecting these sites there was a base assumption that those hydrographs that exhibited 'peaky' flows were surface water dominated whilst those which fluctuated slower were more groundwater dominated 11 of these are located around England however with one more in north west Wales and another in southern Scotland.
+	\subsection*{Results}	
+	\subsection*{Discussion}
+	\subsection*{Conclusion}
+
+\section*{Section 5 - Glossary}	
+\textbf{Base Flow Index (BFI)} ...\\
+\textbf{Base Level Index (BLI)} ...\\
+\textbf{Groundwater} ...\\
+\textbf{Multisource} ...\\
+\textbf{Surface water} ...\\
+
+%----------------------------------------------------------------------------------------
+%	REFERENCE LIST
+%----------------------------------------------------------------------------------------
+\bibliography{../../References/PhD_References}{}
+\bibliographystyle{abbrvnat}
+
+%\begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
+%\bibliography{Bibliography}
+%\end{thebibliography}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Large Colored Title Article
+% LaTeX Template
+% Version 1.1 (25/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{description}
+	\item[First] This is the first item
+	\item[Last] This is the last item
+\end{description}
+
+\begin{table}
+	\caption{Random table}
+	\centering
+	\begin{tabular}{llr}
+		\toprule
+		\multicolumn{2}{c}{Name} \\
+		\cmidrule(r){1-2}
+		First name & Last Name & Grade \\
+		\midrule
+		John & Doe & $7.5$ \\
+		Richard & Miles & $2$ \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\begin{align}
+A = 
+\begin{bmatrix}
+A_{11} & A_{21} \\
+A_{21} & A_{22}
+\end{bmatrix}
+\end{align}
+
+%\bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
+%Figueredo, A.~J. and Wolf, P. S.~A. (2009).
+%\newblock Assortative pairing and life history strategy - a cross-cultural
+%study.
+%\newblock {\em Human Nature}, 20:317--330.
