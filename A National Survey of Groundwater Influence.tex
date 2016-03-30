@@ -42,6 +42,14 @@
 % Packages added my Ben
 \usepackage[round]{natbib}
 \usepackage{tabularx}
+\usepackage{graphicx}
+\graphicspath{ {Pictures/} }
+\newcommand{\multilinedcell}[3][c]{%
+	\begin{tabular}[#1]{@{}#2@{}}#3\end{tabular}}% 
+% You can change the l to c is you want this centered
+% This allows multiple lines (or 2?) to be made within a cell in a table
+% The above is taken from: http://tex.stackexchange.com/questions/2441/how-to-add-a-forced-line-break-inside-a-table-cell
+
 \usepackage[
 	pdftitle={A National Survey of Groundwater Influence},
 	pdfauthor={Ben Smith},
@@ -49,10 +57,10 @@
 %	pdfkeywords={keyword1, keyword2},
 	pdfpagemode={UseOutlines},
 	bookmarks=true,
-	bookmarksopen=true,
+	bookmarksopen=false,
 	bookmarksopenlevel=1,
 	bookmarksnumbered=true,
-	hypertexnames=false,
+	hypertexnames=true, %waass false
 	colorlinks = true,
 	linkcolor={blue},
 	citecolor={blue},
@@ -119,8 +127,9 @@ PhD Student at the University of Newcastle -  \today{} %Your institution
 %----------------------------------------------------------------------------------------
 %	ARTICLE CONTENTS
 %----------------------------------------------------------------------------------------
+% Remove the * after \section* to make heading numbers and bookmarks
 
-\section*{Section 1 - Rational}
+\section{Rational}
 Groundwater flooding occurs when water rises to above ground level from subsurface \citep{Naughton2015}, this is most likely to occur when high antecedent groundwater conditions are paired with increased rainfall \citep{Macdonald2008}. Predominately situated over chalk catchments, it is estimated that 122,000 - 290,000 properties in the UK are at risk of groundwater flooding \citep{McKenzie2015}. Furthermore, antecedent conditions, such as high groundwater levels, can compound the risk of flooding from other sources \citep{An2014} and so it should come as no surprise that a further 980,000 properties are at risk of flooding from multiple sources \citep{McKenzie2015}. As such it is appropriate to further develop current methods of establishing the risk posed by multisource flooding in the UK. This is the topic of my PhD, to investigate flooding from multiple sources through the use of a coupled groundwater-surface water model.
 
 In the quest to role out multisource flooding around the UK, it is first appropriate to conduct preliminary research into which catchments are likely to be at risk of such events. As such, this task seeks the identify the following research question:
@@ -129,66 +138,70 @@ In the quest to role out multisource flooding around the UK, it is first appropr
 \end{center}
 The benefits of answering this are twofold - to (hopefully) justify the development of such a model whist indicating those areas that are likely to benefit from multisourced models, thus aiding their design and implementation. This document seeks to provided and overview of research already being conducted in this field along with the methodology intended for  addressing this question.
 
-%\begin{enumerate}
-%	\item Base level indexes (BLIs) will be calculated for each of the gauging stations. This will indicate the of groundwater in each river.
-%	\item The frequencies of river level change will be investigated through wavelet analysis. This will indicate whether, following a rainfall event, the river is subject to rapid surface runoff responses or slower groundwater sourced responses or a combination of both. 
-%\end{enumerate}
-%Both of these investigations will be spatially visualised on maps to show the locations of groundwater sourced, surface water sourced and multisourced river sections. Alongside this quantitative approach, a scan of the literature will be conducted to create a catalogue of multisourced flooding eventsCoupled with this with be a 
 
-\section*{Section 2 - Current knowledge}
+%------------------------------------------------------------------------------------------------------------
+\section{Current knowledge}
 
-
-\section*{Section 3 - Methodology}
+%------------------------------------------------------------------------------------------------------------
+\section{Methodology}
 [Make sure that you state the reason that you are conducting each analysis and how that ties back to research questions.]\\
 
-	\subsection*{Raw Data}
+%------------------------------------------------------------------------------------------------------------
+	\subsection{Raw Data}
 [Talk about what the data is, the work that has been done on it, the issues with it and what you will do to it. What programs you will use etc. Are there programs that will let you infil the errors?]\\
 
 The primary method of assessment in this task will use a national river level (or stage) dataset. This is composed of recordings from approximately 2500 gauging stations situated across England, Wales and Scotland. England and Wales hold the vast majority of the stations, with relatively few, poorly distributed gauges in Scotland. This data was held in the Environment Agency's WISKI hydrometric archive until recently when it was compiled and quality controlled by the JBA Trust. This was conducted as part of the SINATRA Project (\url{http://www.met.reading.ac.uk/flooding/}) in an investigation into instances where river levels have risen rapidly. Many of the gauging station records are of high resolution with recordings every 15 minutes however there are instances where this is not the case or where there are gaps in the record - these can range in length from a single recording to many years of data. Furthermore, these recordings may not have originated from exact 15 minute intervals but have been rounded to the nearest appropriate interval.
 
 Data was quality controlled to some degree during compilation by JBA, however as this was a mostly automated process it is not perfect and there are still missing dates and errant river levels. These errors may be down to imperfect transfers of data between systems or perhaps when original recordings were not taken due to steady river level. In some instances, where only a few data points were missing, river levels have been interpolated - it is not clear where these points are. Care will be taken during the analysis conducted during this study to identify and deal with such occurrences.
 
-Any data that does not have an associated date will be removed. A simple check will be conducted to identify periods over which river level experiences an significant and immediate or a change that is beyond the plausible scale (e.g. a level rise of 10's of meters). These instances will be inspected on a case by case basis and levels corrected where possible. Where this is not possible, data will be removed (replaced with NA values). Time series that do not have a sufficient duration shall not be used in this investigation - 'a sufficient duration refers to xxx. This will depend of the resolution under investigation. For example, in the base level analysis, as long as at least one subdaily level has been recorded that day will be used in the calculations regardless of the number of missing subdaily values. *** You may want to review this later ***.
+Any data that does not have an associated date will be removed. A simple check will be conducted to identify periods over which river level experiences an significant and immediate or a change that is beyond the plausible scale (e.g. a level rise of 10's of meters). These instances will be inspected on a case by case basis and levels corrected where possible. Where this is not possible, data will be removed (replaced with NA values). Time series that do not have a sufficient duration shall not be used in this investigation - a 'sufficient duration' refers to xxx. This will depend of the resolution under investigation. For example, in the base level analysis, as long as at least one subdaily level has been recorded that day will be used in the calculations regardless of the number of missing subdaily values. *** You may want to review this later ***.
 
-	\subsection*{Base Level Index (BLI)}
-Base flow reduction is a technique that has been carried out on river flow hydrographs for many years. This is the process of splitting the flow into fast flow and slow flow (or base flow) components. The fast flow component is thought to represent water from surface runoff that enters the stream system soon after is is precipitated. The slow component is thought to be derived from a variety of stored sources \citep{Tallaksen1995} and should refer to a relatively consistent water level within the river that is relatively independent of local rainfall. By taking the low (or base) flow as a ratio of the total stream flow, the base 'base flow index' (BFI) is calculated \citep{Gustard1992}.
+\subsubsection*{Missing Data}
+Some kind of coarse screening will be done somehow to remove or identify and highly errant/missing data. 
 
-Base flow indexing was originally developed by what is now the Centre for Ecology and Hydrology and can be used to estimate the volume of water that has been derived from stored sources - the majority of which comes from groundwater \citep{Li2013,Stewart2007}. As such, the BFI can be used as an indication as to whether the catchment is controlled by surface runoff, groundwater levels or a mixture of both (multisourced). For this reason, the base \textit{level} index (BLI) will be calculated at as many gauging stations as possible, this will use identical techniques to BFI calculations. This should indicate which rivers or regions are have multisourced  influences and thus which would benefit from multisourced modelling.
+In the even that some, but not all, sub-hourly data is missing within the river level time series then that data shall be infilled as a mean of it's surrounding values....
+
+%------------------------------------------------------------------------------------------------------------
+	\subsection{Base Level Separation}
+Base flow reduction is a technique that has been carried out on river flow hydrographs for many years. This is the process of splitting the flow into fast flow and slow flow (or base flow) components. The fast flow component is thought to represent water from surface runoff that enters the stream system soon after is is precipitated. The slow component is thought to be derived from a variety of stored sources \citep{Tallaksen1995} and should refer to a relatively consistent water level within the river that is relatively independent of local rainfall. 
+
+Base flow reduction was originally developed by what is now the Centre for Ecology and Hydrology, although its roots can be traced back further \citep{Brodie2005}, and can be used to estimate the volume of water that has been derived from stored sources. Although lakes, wetlands, snow and glaciers can provide slow release storage \citep{Brodie2005}, groundwater is the dominant component of base flow \citep{Li2013,Stewart2007}. This does however introduce a caveat in this method - although base flow (and level) separation has the potential to quantitatively describe the groundwater influence on a river, in cases where the river is regulated or has significant storages or abstractions the BFI (or BLI) may not be applicable \citep{Brodie2005}. With this in mind however, this part of the methodology should still enable the generalised, nationwide indication that is sought.
+
+By taking the low (or base) flow as a ratio of the total stream flow, the base 'base flow index' (BFI) is calculated \citep{Gustard1992}. This easily comparable number can be used as an indication as to whether the catchment is controlled by surface runoff, groundwater levels or a mixture of both (multisourced). For this reason, the base \textit{level} index (BLI) will be calculated at as many gauging stations as possible, this will use identical techniques to BFI calculations. This should indicate which rivers or regions are have multisourced  influences and thus which would benefit from multisourced modelling.
 
 The processes by which base flow index are calculated are transferable between flow and level. As no other literature could be found that uses this separation method on river level, this is taken to be the first time such an assessment has been conducted, at least on such a large scale. What follows is a more detailed explanation of some of the methods that can be used to calculate the base \textit{flow} index, or in this instance the base \textit{level} index.
 
 Calculating the BFI is not a simple step however, as \citet{Nejadhashemi2009} stated that over 40 methods exist, with more developed since their study. Furthermore, although numerous works have sought to determine which of these is the most accurate, the difficulty in directly measuring base flow makes assessing which of these is most appropriate a difficult process \citep{Li2013}. \citet{Nejadhashemi2009} grouped all of the methods of calculating BFI into 6 groups, with a 7th (physically based modelling) named by \citet{Li2013}.
 
+%........................................................................................................
 \begin{table*}
 \caption{Methods for Calculating BFI}
 \centering
 %\begin{adjustbox}{width=1\textwidth}
-\begin{tabularx}{\linewidth}{ l X X X c} 
+\begin{tabularx}{\textwidth}{ X X X X c} 
 %	\begin{tabular*}{\textwidth}{ l c c c c c}
 		\toprule
-		Method Type & Notes & Pros & Cons & Plausible\\
-		\midrule
+\textbf{Method Type} & \textbf{Notes} & \textbf{Pros} & \textbf{Cons} & \textbf{Plausible}\\
+		\midrule	
+Graphical &  & Simple & Subjective & No \\
 		
-		Early graphical methods &  & Simple & Subjective &x \\
+Empirical  (1) & x  & x & x & x \\
+
+Automated (RDFs) & These apply signal processing techniques to remove the high frequency changes in flow, leaving the low frequency base flow & Commonly used, simple and efficient. Only require a stream hydrograph and limited user defined parameters for computation. & Do not take into account physical processes. The applicability of the user defined parameters depends on which catchment it is applied to. & Yes \\
 		
-		Empirical methods (1) & x  & x & x & x \\
+Analytical & These require the identification of a starting point for the base flow recession. This can be  number of days following a rainfall event or an inflection point on the river flow or level curve (2) &x &x &x \\
 		
-		Automated methods (RDFs) & These apply signal processing techniques to remove the high frequency changes in flow, leaving the low frequency base flow & Commonly used, simple and efficient. Only require a stream hydrograph and limited user defined parameters for computation. & Do not take into account physical processes. The applicability of the user defined parameters depends on which catchment it is applied to. & Yes \\
+Three Component &x  &x & x&x \\
+
+Physically Based Models (1) & These are thought to be oe of the most accurate tools for estimating base flow.  & Take into account the differences in catchment characteristics. & These require a number of catchment parameters such as rainfall and evapotranspiration as well as calibration. This makes them time and data intensive. & No \\
 		
-		Analytical methods & These require the identification of a starting point for the base flow recession. This can be  number of days following a rainfall event or an inflection point on the river flow or level curve (2) &x &x &x \\
-		
-		Three component methods &x  &x & x&x \\
-		
-		Physically Based Models (1) & These are thought to be oe of the most accurate tools for estimating base flow.  & Take into account the differences in catchment characteristics. & These require a number of catchment parameters such as rainfall and evapotranspiration as well as calibration. This makes them time and data intensive. & No \\
-		
-		Geochemical methods & x & Deemed to be accurate &
-		Data is not available of practically obtainable & No\\
+Geochemical & x & Deemed to be accurate & Data is not available of practically obtainable & No\\
 	\bottomrule
-	\multicolumn{5}{l}{1 -\citet{Li2013}, 2 - \citep{Nejadhashemi2007}}\\
+	\multicolumn{5}{l}{} \\
+	\multicolumn{5}{l}{
+	1 -\citet{Li2013}, 2 - \citep{Nejadhashemi2007}}\\
 \end{tabularx}
 \end{table*}
-% To make lines 2 lines then incert this where you want the newline:
-% \begin{tabular}[x]{@{}c@{}}Empirical methods\\ (1)\end{tabular}
 
 
 \begin{itemize}
@@ -201,22 +214,78 @@ Calculating the BFI is not a simple step however, as \citet{Nejadhashemi2009} st
 	\item Physically based modelling
 \end{itemize}
 
-Graphical techniques were the first ones to be used however these were found to be rather subjective and so, since the 1980's, increasingly complex methods have been developed \citet{Li2013}. One of the main reasons for this is the need to account for variations in spatial and temporal heterogeneity between catchments \citep{Tallaksen1995}. This us because the base flow, relative to the total stream flow, alters depending on what time of the year it is. One of the mechanisms behind this variation is evapotranspiration, which varies depending on the time of year, having a greater influence (and therefore a lower baseflow) during the drier summer months, especially during the growing season \citep{Tallaksen1995}. Spatial variation such as differences in geology or land use can also make a difference - sandy soils create little runoff and so BFI is high whereas clayey soils do not transmit water and so cause high surface run off and therefore a low base flow \citep{Li2013}.
+%........................................................................................................
 
- Automated methods, specifically recursive digital filters (RDAs), are the most used nowadays due to their simplicity and efficiency \citet{Li2013}. Out of over 40 methods fond in the literature, \citet{Nejadhashemi2009} selected 5 methods according to citation count and the availability of the required data, and tested them against recorded base flows from a small catchment in the USA.  Nejadhashemi et al. found that it was a simple automated method proposed by \citet{Boughton1988} had the closest correlation to the observed base flow data. One of the limitations with this method however is that it requires the choosing of a single point that is deemed to be the end of surface runoff. Furthermore, this method was found to be sensitive to physiological characteristics as well as hydrological conditions. These issues could be very problematic when conducting this automated study due to the potentially time intensive selecting of points and the reliance on accurate, time intensive estimations of the catchment parameters. Whilst other methods investigated held some degree of accuracy, it was found that a simple smoothing relationship was the least effective. **I think that this may be what LFstat uses**.
+Estimating base flow originated as graphical techniques. These are simple techniques that involve defining points at which the base flow and the stream flow intersect. Three well known methods are the (1) constant discharge, (2) constant slope and (3) concave method, seen in Figure \ref{fig:Graphical}. Other methods exist for selecting the intersect, these use simple mathematical formulas and can be related to basic catchment parameters such as area \citep{Brodie2005}. Graphical separation methods were found to be rather subjective and so, since the 1980's, have been gradually replaced by increasingly complex and computationally intensive methods have been developed \citet{Li2013, Stadnyk2015}.
+
+\begin{figure}
+	\includegraphics[width = \linewidth]{GraphicalMethods}
+	\caption[TOC caption]{Three alternate graphical methods for separating the base flow from the total flow. Base flow is taken as the region below the chosen line - lines are produced by connecting the start of the rising limb to a selected intersection point on the falling limb. Taken from \citet{Brodie2005}}
+	\label{fig:Graphical}
+	\centering
+\end{figure}
+
+One of the main reasons for the development of more complex base flow separation methods is the need to account for variations in spatial and temporal heterogeneity between catchments \citep{Tallaksen1995}. This is because the base flow, relative to the total stream flow, alters depending on what time of the year it is. One of the mechanisms behind this variation is evapotranspiration, which varies depending on the time of year, having a greater influence (and therefore a lower baseflow) during the drier summer months, especially during the growing season \citep{Tallaksen1995}. Spatial variation such as differences in geology or land use can also make a difference - sandy soils create little runoff and so BFI is high whereas clayey soils do not transmit water and so cause high surface run off and therefore a low base flow \citep{Li2013}.
+
+\begin{figure}[t!]
+	\includegraphics[width = 0.9\linewidth]{Automated_Methods}
+	\centering
+	\caption[TOC caption]{Automated methods of separating base flow from the total stream flow are simple and efficient. Although they tend not to have any physical grounding they can be calibrated to suit a specific catchment. Adapted from \citep{Sloto1996}}
+	\label{fig:Automated}
+\end{figure}
+
+Nowadays, automated methods, specifically recursive digital filters (RDFs), are the most used  due to their simplicity and efficiency \citet{Li2013}. Some of the more basic automated techniques are demonstrated in Figure \ref{fig:Automated}. Typically, automated methods do not have any physical grounding but offer a simple and repeatable technique \citep{Brodie2005} that can be at least partially calibrated to a catchment by altering simple user defined parameters. The aforementioned RDFs work slightly differently in that they use signal processing techniques to remove the high frequency components of the hydrograph. Examples of these can be seen in \citet{Brodie2005}.
+
+With the wide variety in the number of available methods for base flow separation, it is perhaps difficult to see the wood for the trees when selecting a method for calculating base flow index. However two methods will be used, a smoothing method and the Lyne and Hollick RDF \citep{Lyne1979}. This will hopefully provide two comparable methods and where one fails the other may take the weight. Both methods are simple, reproducible and do not take into account physical characteristics
+
+\subsubsection{CEH Smoothing...(Graphical??)}
+
+\subsubsection{The Lyne and Hollick Filter (RDA)}
+The Lyne and Hollick filter \citep{Lyne1979} has been chosen as an appropriate method for this step. This is a recursive digital filter (RDA) method based on signal analysis and processing techniques \citep{Lyne1979} that has gained popularity in Australia \citep{Chapman1991} and been widely used as a result \citep{Ladson2013}. It has been chosen for its simplicity and reproducibility and will be used alongside a recent paper by \citet{Ladson2013} that offers R code and advice on a standardised approach. The filter equations, as described in \citet{Ladson2013}, are:
+
+\begin{equation}
+q_{f}(i) =
+\begin{cases}
+\alpha q_{f} (i-1) \  + \ \frac{(1+\alpha)}{2}[q(i)-q(i-1)] \\ \quad\quad\quad\quad\quad\quad\quad\quad\quad\quad \textit{for}\  q_f(i) >0\\
+0 \quad\quad\quad\quad\quad\quad\quad\quad\quad \ otherwise\\
+\end{cases}
+\end{equation}
+\begin{equation}
+q_b(i) = q(i) - q_f(i)
+\end{equation}
+
+\begin{center}
+\textit{Where q$_f$, q(i) and q$_b$(i) equal the quick flow, stream flow and base flow at time i; $\alpha$ is the filter parameter. The presence of the left-hand-bracket and its second and third lines in equation 1 simply state that the quick flow can not go below 0.}
+\end{center}
+
+One limitation of this method is that it does not attempt to take into account any physical processes and so can not be used to any great affect applications such as land use assessments \citep{Ladson2013}, its lack of physical basis has also been pointed out by \citet{Chapman1991}. The filter works by removing the high frequency signal's (assumed to be the quick flow component of stream flow) from the time series \citep{Nathan1990}. It can however be calibrated by changing the filter parameter $\alpha$. This typically falls in a range of 0.9-0.99 and has the effect of partitioning a greater or lesser volume of stream flow into the fast and slow components. Work has shown the optimum value for the filter parameter to be around 0.925 \citep{Nathan1990} and so this is the value that shall be used. For simplicity, and so that the BLIs are comparable across catchments, this value will not be calibrated to each gauge. I believe that this is an appropriate choice, however, as in \citet{Nathan1990, Nathan1991}, it should be noted that the BLIs produced are somewhat arbitrary, comparable indices and do not represent precise physical characteristics.
+
+As mentioned above, a significant factor in the choosing of the Lyne and Hollick filter is its reproducibility. This is increased by the work of \citet{Ladson2013} who, upon finding significant variation in its usage in the literature, produced a framework to aid its implementation. This can be found in their paper, in this work it will take the form of:
+\begin{itemize}
+	\item For any daily time series of less than 300 days, 30 reflected values will be added at each end prior to base level estimation. These will then be removed prior to BLI calculation.
+	\item For daily calculations, the filter will be run 3 times: forwards, backwards, and forwards again. Multiple runs have the effect of optimally smoothing the data; running one filter in reverse helps to counter any temporal desynchronizing of the fast and slow flow components with the original stream flow. Each pass is applied to the previous, i.e. each time the data is more averaged, rather than the original data being sampled three times.
+	If any hourly time series are used, the filter will be passed 9 times.
+	\item The initial, user defined value of quick flow ($q_f(i)$), which is at the very start of the added reflected period, will be equal to the original total stream flow. On the second (now backwards) pass, the initial value of quick flow will be the final value of estimated baseflow ($q_b$) from the 1$^st$ pass. On pass 3 (forwards again) the initial value of quick flow will again be the final value of base flow from pass 2.
+	\item Where data are missing, time series will be dividen into series of present tand missing data. periods that are missing data will be not be assessed. The remaining segments will be assessed as normal, and any that are shorter than 300 days will have reflections added to each end, as above. Base flow will then be averaged (weighted by time period) to produce a single BLI for each gauge.
+	\citet{Ladson2013} state that the filter parameter should be calibrated, for example using chemical tracers. However, as this is not feasible for the large number of catchments involved in this study and there would still be a degree of uncertainly associated with any calibration, this shall not be done.
+	
+\end{itemize}
+
+\textit{** May not use...\\
+Out of over 40 methods fond in the literature, \citet{Nejadhashemi2009} selected 5 methods according to citation count and the availability of the required data, and tested them against recorded base flows from a small catchment in the USA. Nejadhashemi et al. found that it was a simple automated method proposed by \citet{Boughton1988} had the closest correlation to the observed base flow data. One of the limitations with this method however is that it requires the choosing of a single point that is deemed to be the end of surface runoff. Furthermore, this method was found to be sensitive to physiological characteristics as well as hydrological conditions. These issues could be very problematic when conducting this automated study due to the potentially time intensive selecting of points and the reliance on accurate, time intensive estimations of the catchment parameters. Whilst other methods investigated held some degree of accuracy, it was found that a simple smoothing relationship was the least effective. **I think that this may be what LFstat uses**. ...***}
 
 
-Base flow separation has been in place for several decades **reference**, however has developed in complexity and computational requirements over the years \citep{Stadnyk2015}. Each method requires a time series of the recorded flow, and many some additional catchment parameters.
 
-
-	\subsection*{Wavelet Analysis}
+%........................................................................................................
+	\subsection{Wavelet Analysis}
 Wavelet analysis tests which frequencies are present in the data. In other words, whether the river level has any regularity to it and, if so how long and how prevalent this is. An example of such a frequency or regularity is evident in many of the time series on a yearly scale  where each year river levels increase over the winter months.
 
 It is presumed that variations in river level that are due to groundwater influences will occur over a number of days where as those that are a Direct result of runoff may only take a umber of hours to pass into the river system and flow past te gauge. This frequency analysis should therefore expose those rivers that have a strong groundwater or base level components.
 
-	\subsection*{A Flood Catalogue}
-	\subsection*{Hydrograph Inspection}
-	\subsection*{Hypothesis Testing}
+%........................................................................................................
+	\subsection{A Flood Catalogue}
+	\subsection{Hydrograph Inspection}
+	\subsection{Hypothesis Testing}
 		\begin{itemize}
 			\item The degree to which groundwater influences a catchment correlates with the catchment's underlying geology.
 			\item The BLI calculated in this study will mirror the BFI calculated my the NRFA.
@@ -227,13 +296,16 @@ It is presumed that variations in river level that are due to groundwater influe
 			\item Results will correlate with other groundwater flood maps such as those produced by the Environment Agency, the British Geological Survey, JBA and ESI.
 		\end{itemize}
 
-\section*{Section 4 - Initial Trials}
+%------------------------------------------------------------------------------------------------------------
+\section{Initial Trials}
 Prior to this task, the river levels recorded at 13 gauging stations spread across the UK were looked at. These gauges were chosen so as to sample a range of catchment characteristics and were intended to capture rivers ranging from heavily dominated by groundwater to those dominated my surface water and those under the influence of both. in selecting these sites there was a base assumption that those hydrographs that exhibited 'peaky' flows were surface water dominated whilst those which fluctuated slower were more groundwater dominated 11 of these are located around England however with one more in north west Wales and another in southern Scotland.
-	\subsection*{Results}	
-	\subsection*{Discussion}
-	\subsection*{Conclusion}
 
-\section*{Section 5 - Glossary}	
+	\subsection{Results}	
+	\subsection{Discussion}
+	\subsection{Conclusion}
+	
+%------------------------------------------------------------------------------------------------------------
+\section{Glossary}	
 \textbf{Base Flow Index (BFI)} ...\\
 \textbf{Base Level Index (BLI)} ...\\
 \textbf{Groundwater} ...\\
@@ -254,23 +326,20 @@ Prior to this task, the river levels recorded at 13 gauging stations spread acro
 
 \end{document}
 
-
+%\begin{enumerate}
+%	\item Base level indexes (BLIs) will be calculated for each of the gauging stations. This will indicate the of groundwater in each river.
+%	\item The frequencies of river level change will be investigated through wavelet analysis. This will indicate whether, following a rainfall event, the river is subject to rapid surface runoff responses or slower groundwater sourced responses or a combination of both. 
+%\end{enumerate}
+%Both of these investigations will be spatially visualised on maps to show the locations of groundwater sourced, surface water sourced and multisourced river sections. Alongside this quantitative approach, a scan of the literature will be conducted to create a catalogue of multisourced flooding eventsCoupled with this with be a 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Large Colored Title Article
-% LaTeX Template
-% Version 1.1 (25/11/12)
-%
 % This template has been downloaded from:
 % http://www.LaTeXTemplates.com
-%
 % Original author:
 % Frits Wenneker (http://www.howtotex.com)
-%
 % License:
 % CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
-%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{description}
@@ -300,9 +369,3 @@ A_{11} & A_{21} \\
 A_{21} & A_{22}
 \end{bmatrix}
 \end{align}
-
-%\bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
-%Figueredo, A.~J. and Wolf, P. S.~A. (2009).
-%\newblock Assortative pairing and life history strategy - a cross-cultural
-%study.
-%\newblock {\em Human Nature}, 20:317--330.
