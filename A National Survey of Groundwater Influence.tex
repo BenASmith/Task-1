@@ -271,16 +271,25 @@ As mentioned above, a significant factor in the choosing of the Lyne and Hollick
 	
 \end{itemize}
 
-\textit{** May not use...\\
-Out of over 40 methods fond in the literature, \citet{Nejadhashemi2009} selected 5 methods according to citation count and the availability of the required data, and tested them against recorded base flows from a small catchment in the USA. Nejadhashemi et al. found that it was a simple automated method proposed by \citet{Boughton1988} had the closest correlation to the observed base flow data. One of the limitations with this method however is that it requires the choosing of a single point that is deemed to be the end of surface runoff. Furthermore, this method was found to be sensitive to physiological characteristics as well as hydrological conditions. These issues could be very problematic when conducting this automated study due to the potentially time intensive selecting of points and the reliance on accurate, time intensive estimations of the catchment parameters. Whilst other methods investigated held some degree of accuracy, it was found that a simple smoothing relationship was the least effective. **I think that this may be what LFstat uses**. ...***}
-
-
-
 %........................................................................................................
 	\subsection{Wavelet Analysis}
-Wavelet analysis tests which frequencies are present in the data. In other words, whether the river level has any regularity to it and, if so how long and how prevalent this is. An example of such a frequency or regularity is evident in many of the time series on a yearly scale  where each year river levels increase over the winter months.
+\begin{figure}[h]
+	\includegraphics[width = \linewidth]{Fluctn}
+	\caption[TOC caption]{Regular, yearly fluctuations can be seen in river level (Gauge 444310), it is hoped that wavelet analysis will pick up fluctuations of a variety of scales from yearly to daily.}
+	\label{fig:Fluctn}
+	\centering
+\end{figure}
 
-It is presumed that variations in river level that are due to groundwater influences will occur over a number of days where as those that are a Direct result of runoff may only take a umber of hours to pass into the river system and flow past te gauge. This frequency analysis should therefore expose those rivers that have a strong groundwater or base level components.
+Wavelet analysis tests which frequencies are present in the data. In other words, whether river level fluctuations have any regularity to them and, if so, the frequency and strength of these fluctuations. Fluctuations can be seen An example of such a frequency or regularity is evident in many of the time series on a yearly scale where each year river levels increase over the winter months (Fig \ref{fig:Fluctn}). Although the maths is non-trivial, the basis behind wavelet analysis is relatively simple to comprehend and so shall be described in brief below (along with the necessary background on \textit{Fourier analysis}):
+
+When investigating a stationary time series such as river level (i.e. one that fluctuates around a steady mean rather than one that exhibits a trend e.g. world population), it can be said that the series can be represented by superimposing sine and cosine waves in a range of frequencies and amplitudes \citep[p 232]{Shumway2006}. \textit{Fourier analysis} is able to take a time series and pull out those sine and cosine functions and display them graphically showing both their frequencies and amplitudes. However, one limitation with Fourier analysis is that it assumes that the sine and cosine waves are constant across the length of the time series. This becomes an issue in some instances however as this assumption may not hold true. An example of this may be when monitoring earthquakes at a tectonic fault - there may be occasional earth quakes recorded and these may be able to be described using the sine and cosine functions above, but this may be temporally constrained and so can't be broken into component waves when the time series is analysed as a whole. River level data is similar to this, where regular fluctuations in level may only occur following a rainfall event.
+
+It is with this in mind that I bring \textit{dynamic Fourier analysis} to your attention. This process is similar to that described above, however it is performed on multiple segments of the time series. These segments can overlap, although this is not a necessity \citep[p 233]{Shumway2006}, and so allow local, temporally confined fluctuations to be discerned. The size of these segments can be defined by the operator and so altered to capture both long and short term fluctuations. 
+
+Wavelet analysis, the technique that shall be utilised in this section of the methodology, is a further development on dynamic Fourier analysis. In essence, wavelet analysis implements the dynamic Fourier analysis technique described above but using more ergonomic wave functions (in place of sine and cosine functions) that better describe localised frequencies and with improved performance on non-stationary time series \citep[p 234]{Shumway2006}. This is appropriate as it is the localised fluctuations, such as those following a rainfall event, that are of interest to this study. Furthermore, such events may mean that, although the time series as a whole is stationary, the section under investigation may not be and is thus more suited to techniques applicable to not stationary data. An example of when the data may become non-stationary could be when looking at a winter spring storm - in this instance, the storm event may be superimposed upon falling water levels (such as can be seen in the spring seasons in Figure \ref{fig:Fluctn}). This gives the time series a negative trend and means that it is no longer stationary.
+
+It is presumed that variations in river level due to groundwater influences will occur over a number of days whereas those that are a direct result of runoff may only take a number of hours to pass into the river system. Wavelet analysis should show which frequencies (i.e. hours or days, or even years) are present in each gauge record and help to expose those rivers that have multiple sourced influences.
+
 
 %........................................................................................................
 	\subsection{A Flood Catalogue}
@@ -308,6 +317,7 @@ Prior to this task, the river levels recorded at 13 gauging stations spread acro
 \section{Glossary}	
 \textbf{Base Flow Index (BFI)} ...\\
 \textbf{Base Level Index (BLI)} ...\\
+\textbf{Fourier Analysis \& Dynamic Fourier Analysis} ...\\
 \textbf{Groundwater} ...\\
 \textbf{Multisource} ...\\
 \textbf{Surface water} ...\\
@@ -325,6 +335,13 @@ Prior to this task, the river levels recorded at 13 gauging stations spread acro
 %----------------------------------------------------------------------------------------
 
 \end{document}
+
+
+
+\textit{** May not use...\\
+	Out of over 40 methods fond in the literature, \citet{Nejadhashemi2009} selected 5 methods according to citation count and the availability of the required data, and tested them against recorded base flows from a small catchment in the USA. Nejadhashemi et al. found that it was a simple automated method proposed by \citet{Boughton1988} had the closest correlation to the observed base flow data. One of the limitations with this method however is that it requires the choosing of a single point that is deemed to be the end of surface runoff. Furthermore, this method was found to be sensitive to physiological characteristics as well as hydrological conditions. These issues could be very problematic when conducting this automated study due to the potentially time intensive selecting of points and the reliance on accurate, time intensive estimations of the catchment parameters. Whilst other methods investigated held some degree of accuracy, it was found that a simple smoothing relationship was the least effective. **I think that this may be what LFstat uses**. ...***}
+
+
 
 %\begin{enumerate}
 %	\item Base level indexes (BLIs) will be calculated for each of the gauging stations. This will indicate the of groundwater in each river.
