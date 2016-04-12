@@ -42,12 +42,16 @@ for (x in 1:length(Whole_Dataset)){
     print(paste("There were no errant river levels in ", Gauge_Name, sep = ""))
   }
 
+  
+# Save the dataframe ------------------------------------------------------
   Unique_Tag = paste("RL_", Gauge_Name, sep="")
   assign(Unique_Tag, value=SAMPLE)
+  filepath=paste("Processed Data/", Unique_Tag,'.Rdata',sep="")
+  save(list=Unique_Tag, file =filepath)
+
 }
 
-rm(list=ls(pattern="tbl_"), Unique_Tag, Whole_Dataset, Dates_to_remove, Gauge_Name, Gauge_Names, Missing_data, x)
-rm(list = ls(pattern= "TRL"))
+rm(list=ls(pattern="tbl_"), Unique_Tag, Whole_Dataset, Dates_to_remove, Gauge_Name, Gauge_Names, Missing_data, x, SAMPLE)
 
 
 TRL_1 = data.frame("ObsDate" =RL_029003$ObsDate[0:20], "Value" = sample(0:5, 20, rep = T))
@@ -56,7 +60,7 @@ TRL_3 = data.frame("ObsDate" =RL_029003$ObsDate[0:20], "Value" = sample(0:5, 20,
 
 
 # Now save the data:
-Processed_Dataset  <- setNames(lapply(ls(pattern="TRL"), function(x) get(x)), ls(pattern="TRL"))
+Processed_Dataset  <- setNames(lapply(ls(pattern="RL"), function(x) get(x)), ls(pattern="RL"))
 Gauge_Names        <- ls(Processed_Dataset)
 
 filepath = file.path("TEST_", Gauge_Names[x], ".Rdata", fsep = "")
@@ -71,11 +75,13 @@ x = 1
 
 for (x in 1:length(Gauge_Names)){
   filepath = file.path("TEST", x, ".Rdata", fsep = "")
-  save(Processed_Dataset[x], file = filepath)
+  data = Processed_Dataset[[x]]
+  save(data, file = filepath)
+  
 }
+load(file="TEST1.Rdata")
+load(file="TEST2.Rdata")
 
-str(Processed_Dataset[x])
-str(RL_029003)
 
 
 # 1
